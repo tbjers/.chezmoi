@@ -1,0 +1,43 @@
+# -*-mode: toml;-*- vim:ft=toml
+# file: chezmoi/.chezmoi.toml.tmpl
+
+# {{- $email := promptStringOnce . "email" "Enter the email you use with GitHub" -}}
+# {{- $name := promptStringOnce . "name" "Enter your name" -}}
+# {{- $gpgkey := promptStringOnce . "gpgkey" "Enter your GPG key ID" -}}
+#
+# {{- $osid := .chezmoi.os -}}
+# {{- if hasKey .chezmoi.osRelease "id" -}}
+# {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+# {{- end -}}
+
+encryption = "gpg"
+format = "json"
+color = "on"
+
+[data]
+    email = {{ $email | quote }}
+    name = {{ $name | quote }}
+    gpgkey = {{ $gpgkey | quote }}
+    teleport_version = "v12.3.0"
+    op_version = "v2.10.0"
+    osid = {{ $osid | quote }}
+
+[gpg]
+    recipient = {{ $gpgkey | quote }}
+    suffix = ".asc"
+
+[merge]
+    command = "nvim"
+    args = "-d"
+
+[diff]
+    exclude = ["scripts"]
+    pager = "diff-so-fancy | less --tabs=4 -RFX"
+
+[onepassword]
+    cache = true
+    command = "op"
+    prompt = true
+
+[status]
+    exclude = ["scripts"]
