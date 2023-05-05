@@ -4,6 +4,28 @@
 # exit on error
 set -Eeuo pipefail
 
+# Set secure permissions on created directories and files
+umask 077
+
+# Define version and architecture for op
+op_email="{{ .email }}"
+op_arch="{{ .chezmoi.arch }}"
+
+# Set up colors
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+reset=$(tput sgr0)
+
+verlte() {
+  printf '%s\n%s' "$1" "$2" | sort -C -V
+}
+
+verlt() {
+  ! verlte "$2" "$1"
+}
+
+echo "${green}Installing development dependencies${reset}"
+
 if [ ! -f "/usr/share/keyrings/1password-archive-keyring.gpg" ]; then
   # Add the 1password repository
   curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
@@ -19,8 +41,10 @@ if [ ! -d "/usr/share/debsig/keyrings/AC2D62742012EA22/" ]; then
 fi
 
 # Install dependencies
-sudo apt-get update &&
-  sudo apt -y --no-install-recommends install 1password 1password-cli
+sudo apt-get update \
+  && sudo apt -y --no-install-recommends install 1password 1password-cli \
+    zlib1g-dev libffi-dev libbz2-dev libreadline-dev libncurses-dev libssl-dev \
+    libyaml-dev
 
 # -*-mode:shellscript-*- vim:ft=bash:
 {{- end }}
