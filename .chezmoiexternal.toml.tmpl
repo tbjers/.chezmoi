@@ -18,3 +18,13 @@
     [".local/bin/tctl".filter]
         command = "tar"
         args = ["--extract", "--file", "/dev/stdin", "--gzip", "--to-stdout", "teleport/tctl"]
+
+[".local/bin/mdloader"]
+    type = "file"
+    url = "https://github.com/Massdrop/mdloader/releases/download/1.0.7/mdloader-Linux.zip"
+    executable = true
+    refreshPeriod = "168h"
+    [".local/bin/mdloader".checksum]
+        sha256 = "4b40c816827a947861fbb04a1f18595f133a746e45be4b9087e41b021f371908"
+    [".local/bin/mdloader".filter]
+        command = "zcat"
