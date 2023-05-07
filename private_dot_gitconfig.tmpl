@@ -1,0 +1,90 @@
+# -*-mode: gitconfig;-*- vim:ft=gitconfig:
+# file: chezmoi/private_dot_gitconfig.tmpl
+
+[user]
+  name = {{ .name | quote }}
+  email = {{ .email | quote }}
+  signingkey = {{ .gpgkey | quote }}
+  useConfigOnly = true
+
+[advice]
+  detachedHead = false
+
+[alias]
+  patch = !git --no-pager diff --no-color
+
+[github]
+  user = {{ .chezmoi.username }}
+
+[init]
+  defaultBranch = main
+
+[core]
+  pager = diff-so-fancy | less --tabs=4 -RFX
+
+[fetch]
+  prune = true
+
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+
+[color "diff"]
+  meta = 11
+  frag = magenta bold
+  func = 146 bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+
+[interactive]
+  diffFilter = TERM=xterm diff-so-fancy --patch
+
+#[add "interactive"]
+#  useBuiltin = false
+
+[commit]
+  gpgsign = true
+
+[tag]
+  forceSignAnnotated = true
+  gpgSign = true
+
+[credential]
+  credentialStore = gpg
+
+[color]
+  ui = true
+
+[include]
+  path = {{ .chezmoi.homeDir }}/.gitinclude
+
+[help]
+  autocorrect = 20
+
+[diff "gpg"]
+  textconv = gpg --no-tty --decrypt
+
+[gpg]
+  program = gpg2
+
+[pull]
+  ff = only
+
+[push]
+  autoSetupRemote = true
+
+[includeif "gitdir:~/git/{{ .chezmoi.username }}/"]
+  path = ~/git/{{ .chezmoi.username }}/.gitconfig
+
+[includeif "gitdir:~/git/NascentMaker/"]
+  path = ~/git/NascentMaker/.gitconfig
+
+[includeif "gitdir:~/git/PrepperArmy/"]
+  path = ~/git/PrepperArmy/.gitconfig
+
+#[url "ssh://git@github.com/"]
+#  insteadOf = https://github.com/
